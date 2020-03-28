@@ -47,7 +47,7 @@
 
 .profile-container ul{
     display: grid;
-    grid-template-columns:  repeat(2, 1fr);
+    grid-template-columns:  repeat(3, 1fr);
     grid-gap: 24px;
     list-style: none;
 }
@@ -89,12 +89,12 @@
 
 .profile-container ul li strong{
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 3px;
     color: #41414d;
 }
 
 .profile-container ul li p + strong{
-    margin-top: 32px;
+    margin-top: 10px;
 }
 
 .profile-container ul li p{

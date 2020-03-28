@@ -45,3 +45,16 @@
 .new-incident-container .content form textarea{
     margin-top: 8px;
 }
+.btn-group {
+    display: inline-block;
+}
+
+.btn-group  button{
+    height: 60px;
+    width: 60px;
+    border-radius: 4px;
+    border: 1px solid #dcdce6;
+    background: transparent;
+    margin-left: 16px;
+    transition: border-color 0.2s;
+}

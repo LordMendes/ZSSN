@@ -18,10 +18,12 @@ export default function Register(){
     const [gender, setGender] = useState('');
     const [lonlat, setLonlat] = useState('');
     const [items, setItems] = useState('');
+
     const [water, setWater]= useState(0);
     const [food, setFood]= useState(0);
     const [medication, setMedication]= useState(0);
     const [ammunition, setAmmunition]= useState(0);
+
     const [latitude, setLatitute] = useState('');
     const [longitude, setLongitude] = useState('');
 
@@ -70,15 +72,21 @@ export default function Register(){
             }    
         }    
 
-
+        
         const formdata = new FormData();
 
-        formdata.set('person[name]', name);
+        formdata.set('person[name]', String(name));
         formdata.set('person[age]', age);
-        formdata.set('person[gender]', gender);
+        formdata.set('person[gender]', gender.toLocaleUpperCase);
         formdata.set('person[lonlat]', lonlat);
         formdata.set('items', items);
-        console.log(formdata.get('person[name]'));
+        console.log({
+            name,
+            age,
+            gender,
+            lonlat,
+            items
+        })
         try {
            const response = await axios({
                 method: 'POST',
@@ -87,18 +95,9 @@ export default function Register(){
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'Accept': 'application/json'
                     },
-                data: formdata
-                    /*
-                params:{
-                    'person[name]': name,
-                    'person[age]': age,
-                    'person[gender]': gender,
-                    'person[lonlat]': lonlat,
-                    'items': items
-                },*/
+                body: formdata
                 
             });
-            //alert('ok');
             alert(`Seu ID de acesso: ${response.data.id}`);
             
             history.push('/');
@@ -138,7 +137,7 @@ export default function Register(){
                     onChange={e => setGender(e.target.value)}  
                 />
 
-<div className="input-group">
+                    <div className="input-group">
                         <div className="input-block">
                             <label htmlFor="water">Water</label>
                             <input 
@@ -210,7 +209,7 @@ export default function Register(){
                             onChange={e => setLongitude(e.target.value)}
                         />
                     </div>
-            </div>
+             </div>
                   <button className="button" type="submit">Register</button>
                 </form>
             </div>

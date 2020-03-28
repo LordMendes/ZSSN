@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Link , useHistory} from 'react-router-dom';
 import {FiLogIn} from 'react-icons/fi';
 
-import api from '../../Services/api';
 import axios from 'axios';
 
 import './styles.css';
@@ -11,10 +10,8 @@ import heroesImg from '../../assets/heroes.png';
 
 export default function Logon(){
 
-    const[name, setName] = useState('');
     const[id, setId] = useState('');
-    const[survivors, setSurvivors] = useState([]);
-
+    
     const history = useHistory();
     
     async function handleLogin(e){
