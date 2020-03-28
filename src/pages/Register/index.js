@@ -47,16 +47,16 @@ export default function Register(){
     const history = useHistory();
     async function handleRegister(e){
         e.preventDefault();
-        if(water!== 0 && food !== 0 && medication !== 0 && ammunition !== 0){
+        if(water!== 0 || food !== 0 || medication !== 0 || ammunition !== 0){
             if(water !== 0) {
                 items = (items + ("water:"+water));
-                if(food !== 0 && medication !== 0 && ammunition !== 0){
+                if(food !== 0 || medication !== 0 || ammunition !== 0){
                     items = (items + ";");
                 }
             }        
             if(food !== 0) {
                 items = (items + ("food:"+food));
-                if(medication !== 0 && ammunition !== 0){
+                if(medication !== 0 || ammunition !== 0){
                     items = (items + ";");
                 }
             }        

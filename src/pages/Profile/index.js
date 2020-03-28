@@ -39,13 +39,16 @@ export default function Profile(){
 
         console.log(response.data.id);
         otherSurv = response.data.id;
+        console.log(otherSurv);
 
     }
 
-    function handleTrade(survivor){
+    async function handleTrade(survivor){
         try{
-            getId(survivor);
+            await getId(survivor);
+            
             localStorage.setItem('tradeName', survivor.name);
+            localStorage.setItem('tradeId', otherSurv);
             
             history.push('/trade');
         }catch(err){

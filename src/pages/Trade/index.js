@@ -34,18 +34,18 @@ export default function Trade(){
     const history = useHistory();
 
     function createItemFormat(agua, comida, remedio, municao){
-        let str;
+        let str = "'";
 
-        if(agua!== 0 && comida !== 0 && remedio !== 0 && municao !== 0){
+        if(agua!== 0 || comida !== 0 || remedio !== 0 || municao !== 0){
             if(agua !== 0) {
                 str = (str + ("water:"+agua));
-                if(comida !== 0 && remedio !== 0 && municao !== 0){
+                if(comida !== 0 || remedio !== 0 || municao !== 0){
                     str = (str + ";");
                 }
             }        
             if(comida !== 0) {
                 str = (str + ("food:"+comida));
-                if(remedio !== 0 && municao !== 0){
+                if(remedio !== 0 || municao !== 0){
                     str = (str + ";");
                 }
             }        
@@ -59,29 +59,55 @@ export default function Trade(){
                 str = (str + ("ammunition:"+municao));
             }    
         }  
+        str = str + "'";
+        
         return str;
     }
 
-    async function handleTrade(e){
-        e.preventDefault();
-  
+    async function testInfection(survivorId){       
+        
+        const survivor = await api.get(`/api/people/${survivorId}`);
 
+        const location = survivor.data.location;
+
+        const response = await axios({
+            method: 'get',
+            url: location
+        })
+
+        return response.data.infected;
+
+    
+    }
+
+    async function handleTrade(e){
+        if(testInfection(survId)){
+            alert("You're infected, no one wants to trade with you! =/");
+            return;
+        }
+
+        e.preventDefault();
+        
+        items = createItemFormat(water,food,medication,ammunition);
+        itemsPick = createItemFormat(waterPick,foodPick,medicationPick,ammunitionPick);
         
         const data = new FormData();
 
-
+            data.append('consumer[name]', tradeName);
+            data.append('consumer[pick]', itemsPick);
+            data.append('consumer[payment]', items);
         
         try {
 
             const response = await api.post(`/api/people/${survId}/properties/trade_item`, data);
 
-            alert(`Seu ID de acesso: ${response.data.id}`);
+            alert(`Sucesseful Trade!`);
             
             history.push('/profile');
             console.log(response);
         } catch (err) {
             console.log(err);
-            alert('Erro no cadastro, tente novamente.');
+            alert('Oh no, something is wrong...');
         }
     }
 
