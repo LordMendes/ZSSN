@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Link , useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
-import qs from 'qs';
 
 import axios from 'axios';
 
@@ -17,7 +16,7 @@ export default function Register(){
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [lonlat, setLonlat] = useState('');
-    const [items, setItems] = useState('');
+    let items = "";
 
     const [water, setWater]= useState(0);
     const [food, setFood]= useState(0);
@@ -50,58 +49,48 @@ export default function Register(){
         e.preventDefault();
         if(water!== 0 && food !== 0 && medication !== 0 && ammunition !== 0){
             if(water !== 0) {
-                setItems(items + ("water:"+water));
+                items = (items + ("water:"+water));
                 if(food !== 0 && medication !== 0 && ammunition !== 0){
-                    setItems(items + ";");
+                    items = (items + ";");
                 }
             }        
             if(food !== 0) {
-                setItems(items + ("food:"+food));
+                items = (items + ("food:"+food));
                 if(medication !== 0 && ammunition !== 0){
-                    setItems(items + ";");
+                    items = (items + ";");
                 }
             }        
             if(medication !== 0) {
-                setItems(items + ("medication:"+medication));
+                items = (items + ("medication:"+medication));
                 if(ammunition !== 0){
-                    setItems(items + ";");
+                    items = (items + ";");
                 }
             }        
             if(ammunition !== 0) {
-                setItems(items + ("ammunition:"+ammunition));
+                items = (items + ("ammunition:"+ammunition));
             }    
         }    
 
         
-        const formdata = new FormData();
+        const data = new FormData();
 
-        formdata.set('person[name]', String(name));
-        formdata.set('person[age]', age);
-        formdata.set('person[gender]', gender.toLocaleUpperCase);
-        formdata.set('person[lonlat]', lonlat);
-        formdata.set('items', items);
-        console.log({
-            name,
-            age,
-            gender,
-            lonlat,
-            items
-        })
+        data.append('person[name]', name);
+        data.append('person[age]', age);
+        data.append('person[gender]', gender.toLocaleUpperCase());
+        data.append('person[lonlat]', lonlat);
+        data.append('items', items);
+
+        
         try {
-           const response = await axios({
-                method: 'POST',
-                url: 'http://zssn-backend-example.herokuapp.com/api/people',
-                headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    },
-                body: formdata
-                
-            });
+
+            const response = await api.post('/api/people', data);
+
             alert(`Seu ID de acesso: ${response.data.id}`);
             
             history.push('/');
+            console.log(response);
         } catch (err) {
+            console.log(err);
             alert('Erro no cadastro, tente novamente.');
         }
     }

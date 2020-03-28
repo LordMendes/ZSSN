@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {FiPower, FiFlag, FiShuffle, FiAlertTriangle} from 'react-icons/fi';
 
+import Trade from '../Trade';
+
+import axios from 'axios';
 import api from '../../Services/api';
 
 import './styles.css';
@@ -10,7 +13,7 @@ import logoImg from '../../assets/logo.svg';
 
 export default function Profile(){
     const [survivors, setSurvivors] = useState([]);
-    const [infected, setInfected] = useState('1;')
+    let otherSurv = '';
 
     const history = useHistory();
 
@@ -25,31 +28,44 @@ export default function Profile(){
         })
     }, []);
 
-    async function handleUpdatePosition(id){
-        try{
-            
-        }catch(err){
-            alert('Geez, you\'re stucked.');
-        }
+    async function getId(survivor){
+
+        const location = survivor.location;
+
+        const response = await axios({
+            method: 'get',
+            url: location
+        })
+
+        console.log(response.data.id);
+        otherSurv = response.data.id;
+
     }
 
-    function handleTrade(){
+    function handleTrade(survivor){
         try{
-
+            getId(survivor);
+            localStorage.setItem('tradeName', survivor.name);
+            
+            history.push('/trade');
         }catch(err){
             alert('Poor survivor, no items found...')
         }
     }
 
-    async function handleReport(infectedId){
-        
-        const data = {
-            infected,
-            id
-        }
+    async function handleReport(survivor){
 
         try{
-            const response = await api.post(`/api/people/${id}/report_infection`, data);
+            await getId(survivor);
+
+            const response = await axios({
+                method: 'POST',
+                url: `http://zssn-backend-example.herokuapp.com/api/people/${id}/report_infection.json`,
+                params: {
+                        'infected': otherSurv
+                    }              
+                
+            });
             console.log(response);
         }catch(err){
             console.log(err);
@@ -64,6 +80,7 @@ export default function Profile(){
     }
 
     return(
+
         <div className="profile-container">
             <header>
                 <img src={logoImg} alt="ZSSN"/>
@@ -91,19 +108,17 @@ export default function Profile(){
                 
                         <strong>Location:</strong>
                         <p>{survivor.lonlat}</p>
-                
-                        <button onClick={() => handleUpdatePosition(survivor.id)} type="button"> {/** ATUALIZAR LUGAR */}
-                            <FiFlag size={20} color="#a8a8b3"/>
-                        </button>
-                        <button onClick={() => handleTrade(survivor.id)} type="button"> {/** TROCA */}
+
+                        <button onClick={() => handleTrade(survivor)} type="button"> {/** TROCA */}
                             <FiShuffle size={20} color="#a8a8b3"/>
                         </button>
-                        <button onClick={() => handleReport(setInfected(survivor.id))} type="button"> {/** ALERTA INFECTADO */}
+                        <button onClick={() => handleReport(survivor)} type="button"> {/** ALERTA INFECTADO */}
                             <FiAlertTriangle size={20} color="#a8a8b3"/>
                         </button>
                     </li>
                 ))}
             </ul>
         </div>
+        
     );
 }

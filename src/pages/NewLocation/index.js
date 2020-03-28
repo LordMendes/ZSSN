@@ -10,7 +10,8 @@ import logoImg from '../../assets/logo.svg';
 export default function NewLocation(){
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
-    const [lonlat, setLonlat] = useState('');
+    //const [ lonlat, setLonlat] = useState('');
+    let lonlat = '';
 
     const id = localStorage.getItem('survId');
 
@@ -23,7 +24,7 @@ export default function NewLocation(){
 
             setLatitude(latitude);
             setLongitude(longitude);
-            
+            lonlat = ("point("+latitude+" "+longitude+")");
         },
         (err) => {
             console.log(err);
@@ -38,17 +39,16 @@ export default function NewLocation(){
     async function handleNewLocation(e){
         e.preventDefault();
 
-        
-        console.log();
+        lonlat = `point(${latitude} ${longitude})`;
+
         console.log(longitude);
         console.log(latitude);
-        setLonlat("point("+latitude+" "+longitude+")");
-        const data = {
-            lonlat
-        };
+        
+        console.log(lonlat);
+
 
         try{
-            await api.patch(`/api/people/${id}`, data);
+            await api.patch(`/api/people/${id}`, {lonlat});
 
             history.push('/profile');
         }catch(err){
@@ -97,7 +97,7 @@ export default function NewLocation(){
                 </div>
                 <div>
                     <button className=" button " onClick={handleCurrentLocation}   type="button" >
-                        <FiCrosshair size={18} color="#FFF" /> Get from network
+                        <FiCrosshair size={18} color="#FFF" /> Get it from network
                     </button>
                     <button onClick={handleNewLocation} className="button btn-group" type="submit">Update</button>
                 
