@@ -14,6 +14,10 @@ export default function Reports(){
 
     const survName = localStorage.getItem('survName');
 
+    if(!survName){
+        history.push('/');
+    }
+
     const [waterAvg , setWaterAvg] = useState(0);
     const [foodAvg , setFoodAvg]= useState(0);
     const [medicationAvg , setMedicationAvg] = useState(0);

@@ -82,3 +82,33 @@ label{
    width: 100%;
    font-size: 14px;
 }
+
+.tg  {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+.tg td{
+    font-family:Roboto, sans-serif;
+    font-size:14px;
+    padding:10px 5px;
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    word-break:normal;
+    border-color: #8a8a8a;
+}
+.tg th{
+    font-family:Roboto, sans-serif;
+    font-size:14px;
+    font-weight:normal;
+    padding:10px 5px;
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    word-break:normal;
+    border-color:#8a8a8a;
+}
+.tg .tg-0lax{
+    text-align:left;
+    vertical-align:top
+}

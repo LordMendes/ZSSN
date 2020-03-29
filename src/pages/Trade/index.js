@@ -15,6 +15,10 @@ export default function Trade(){
     const tradeName = localStorage.getItem('tradeName');
     const survId = localStorage.getItem('survId');
 
+    if(!survId){
+        history.push('/');
+    }
+
     let items = "";
 
     const [water, setWater]= useState(0);
@@ -117,7 +121,29 @@ export default function Trade(){
                     <img src={logoImg} alt="ZSSN"/>
                     
                     <h1>Trade</h1>
-                    <p> If you're not infected you can trade with the group!</p>
+                    <p> To perform a trade you must respect the values bellow:</p>
+                    <table class="tg">
+                    <tr>
+                        <th class="tg-0lax">Item</th>
+                        <th class="tg-0lax">Points</th>
+                    </tr>
+                    <tr>
+                        <td class="tg-0lax">1 Water</td>
+                        <td class="tg-0lax">4 points</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-0lax">1 Food</td>
+                        <td class="tg-0lax">3 points</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-0lax">1 Medication</td>
+                        <td class="tg-0lax">2 points</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-0lax">1 Ammunition</td>
+                        <td class="tg-0lax">1 point</td>
+                    </tr>
+                    </table>
 
                     <Link className="back-link" to="/profile">
                         <FiArrowLeft size={16} color="#e02041" />

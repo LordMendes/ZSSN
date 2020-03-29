@@ -10,6 +10,7 @@ import './styles.css';
 import logoImg from '../../assets/logo.svg';
 
 export default function Profile(){
+
     const [survivors, setSurvivors] = useState([]);
     let otherSurv = '';
 
@@ -19,12 +20,17 @@ export default function Profile(){
     const id = localStorage.getItem('survId');
 
 
+
     useEffect(()=>{
         api.get('api/people.json')
            .then(response => {
            setSurvivors(response.data);
         })
     }, []);
+
+    if(!id){
+        history.push('/');
+    }
 
     async function getId(survivor){
 
@@ -96,7 +102,12 @@ export default function Profile(){
                 </button>
             </header>
 
-            <h1> Casos cadastrados</h1>
+            <h1> Survivors List</h1>
+                <div className="legend">
+                    <h2>Symbol Legend</h2>
+                    <FiShuffle size={20} color="#a8a8b3"/> Trade
+                    <FiAlertTriangle size={20} color="#a8a8b3"/> Report Infected
+                </div>
             <ul>
                 {survivors.map(survivor => (
                     <li key={survivor.name}>
@@ -112,10 +123,10 @@ export default function Profile(){
                         <strong>Location:</strong>
                         <p>{survivor.lonlat}</p>
 
-                        <button onClick={() => handleTrade(survivor)} type="button"> {/** TROCA */}
+                        <button onClick={() => handleTrade(survivor)} type="button" > {/** TROCA */}
                             <FiShuffle size={20} color="#a8a8b3"/>
                         </button>
-                        <button onClick={() => handleReport(survivor)} type="button"> {/** ALERTA INFECTADO */}
+                        <button onClick={() => handleReport(survivor)} type="button" > {/** ALERTA INFECTADO */}
                             <FiAlertTriangle size={20} color="#a8a8b3"/>
                         </button>
                     </li>

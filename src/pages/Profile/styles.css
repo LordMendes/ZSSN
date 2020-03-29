@@ -102,3 +102,15 @@
     line-height: 21px;
     font-size:  16px;
 }
+
+.legend {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 12px;
+    margin-bottom: 24px;;
+}
+
+h2{
+    color: #41414d;
+    margin-bottom: 8px;
+}
