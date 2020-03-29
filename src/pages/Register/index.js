@@ -43,6 +43,7 @@ export default function Register(){
     }, []);
 
     const history = useHistory();
+
     async function handleRegister(e){
         e.preventDefault();
         if(water!== 0 || food !== 0 || medication !== 0 || ammunition !== 0){
@@ -73,24 +74,29 @@ export default function Register(){
         
         const data = new FormData();
 
+        if(gender === ''){
+            alert('Gender is a required item');
+            return;
+        }
+
         data.append('person[name]', name);        
         data.append('person[age]', age);        
-        data.append('person[gender]', gender.toLocaleUpperCase());        
+        data.append('person[gender]', gender);        
         data.append('person[lonlat]', lonlat);        
         data.append('items', items);
-
+        alert(gender);
         
         try {
 
             const response = await api.post('/api/people', data);
 
-            alert(`Seu ID de acesso: ${response.data.id}`);
+            alert(`Write your access ID: ${response.data.id}`);
             
             history.push('/');
             console.log(response);
         } catch (err) {
             console.log(err);
-            alert('Erro no cadastro, tente novamente.');
+            alert('Hmmm something is wrong...');
         }
     }
 
@@ -119,12 +125,14 @@ export default function Register(){
                     value={age}
                     onChange={e => setAge(e.target.value)}    
                 />
-                  <input 
-                    placeholder="Gender"
+                <select
                     value={gender}
                     onChange={e => setGender(e.target.value)}  
-                />
-
+                    required>
+                    <option>Gender</option>
+                    <option value="M"> M </option>
+                    <option value="F"> F </option>
+                </select>
                     <div className="input-group">
                         <div className="input-block">
                             <label htmlFor="water">Water</label>
