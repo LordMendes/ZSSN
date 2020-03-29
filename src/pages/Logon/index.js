@@ -53,7 +53,7 @@ export default function Logon(){
 
             </section>
 
-            <img src={heroesImg} alt="Heroes"/>
+            <img src={heroesImg} alt="Survivors"/>
         </div>
         
     )

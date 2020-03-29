@@ -98,7 +98,7 @@ export default function Register(){
         <div className="register-container">
             <div className="content">
                 <section>
-                    <img src={logoImg} alt="Be The Hero"/>
+                    <img src={logoImg} alt="ZSSN"/>
                     
                     <h1>Register</h1>
                     <p>Register yourself as survivor !</p>

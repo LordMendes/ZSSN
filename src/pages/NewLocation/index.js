@@ -53,7 +53,7 @@ export default function NewLocation(){
         <div className="new-incident-container">
             <div className="content">
                 <section>
-                    <img src={logoImg} alt="Be The Hero"/>
+                    <img src={logoImg} alt="ZSSN"/>
                     
                     <h1>Set your new Location</h1>
                     <p>It's important for the group to know where you are righ now.</p>
