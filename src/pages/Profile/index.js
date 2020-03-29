@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {FiPower, FiFlag, FiShuffle, FiAlertTriangle} from 'react-icons/fi';
-
-import Trade from '../Trade';
+import {FiPower, FiShuffle, FiAlertTriangle} from 'react-icons/fi';
 
 import axios from 'axios';
 import api from '../../Services/api';
@@ -37,22 +35,25 @@ export default function Profile(){
             url: location
         })
 
-        console.log(response.data.id);
-        otherSurv = response.data.id;
-        console.log(otherSurv);
+        otherSurv = response.data;
 
     }
 
     async function handleTrade(survivor){
-        try{
-            await getId(survivor);
-            
-            localStorage.setItem('tradeName', survivor.name);
-            localStorage.setItem('tradeId', otherSurv);
-            
-            history.push('/trade');
-        }catch(err){
-            alert('Poor survivor, no items found...')
+        await getId(survivor);
+
+        if(otherSurv.infected){
+            alert('You can\'t trade with infected people!');
+        }else{
+            try{                
+
+                localStorage.setItem('tradeName', survivor.name);
+                localStorage.setItem('tradeId', otherSurv.id);
+                
+                history.push('/trade');
+            }catch(err){
+                alert('Something is wrong, do any of you have items?');
+            }
         }
     }
 
@@ -61,14 +62,12 @@ export default function Profile(){
         try{
             await getId(survivor);
 
-            const response = await axios({
-                method: 'POST',
-                url: `http://zssn-backend-example.herokuapp.com/api/people/${id}/report_infection.json`,
-                params: {
-                        'infected': otherSurv
-                    }              
-                
-            });
+            const data = new FormData();
+
+            data.append('infected', otherSurv.id);
+            console.log(otherSurv.id);
+            const response = await api.post(`/api/people/${id}/report_infection.json`, data);
+         
             console.log(response);
         }catch(err){
             console.log(err);
@@ -89,7 +88,8 @@ export default function Profile(){
                 <img src={logoImg} alt="ZSSN"/>
                 <span>Welcome {survName}</span>
                 
-                <Link className="button" to="/newlocation">Update position</Link>{/** ATUALIZAR LUGAR */}
+                <Link className="button" to="/newlocation">Update position</Link>
+                <Link className="button" to="/reports">Reports</Link>
                 
                 <button onClick={handleLogout} type="button">
                     <FiPower size={18} color="#E02041" />

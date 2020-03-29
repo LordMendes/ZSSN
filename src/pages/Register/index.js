@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { Link , useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
-import axios from 'axios';
-
 import api from '../../Services/api';
 import './styles.css';
 
@@ -16,7 +14,7 @@ export default function Register(){
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [lonlat, setLonlat] = useState('');
-    let items = "";
+    let items = "'";
 
     const [water, setWater]= useState(0);
     const [food, setFood]= useState(0);
@@ -70,14 +68,15 @@ export default function Register(){
                 items = (items + ("ammunition:"+ammunition));
             }    
         }    
+        items = items + "'";
 
         
         const data = new FormData();
 
-        data.append('person[name]', name);
-        data.append('person[age]', age);
-        data.append('person[gender]', gender.toLocaleUpperCase());
-        data.append('person[lonlat]', lonlat);
+        data.append('person[name]', name);        
+        data.append('person[age]', age);        
+        data.append('person[gender]', gender.toLocaleUpperCase());        
+        data.append('person[lonlat]', lonlat);        
         data.append('items', items);
 
         

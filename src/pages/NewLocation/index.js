@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Link , useHistory} from 'react-router-dom';
 import { FiArrowLeft, FiCrosshair } from 'react-icons/fi';
 
@@ -10,7 +10,6 @@ import logoImg from '../../assets/logo.svg';
 export default function NewLocation(){
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
-    //const [ lonlat, setLonlat] = useState('');
     let lonlat = '';
 
     const id = localStorage.getItem('survId');
@@ -40,12 +39,6 @@ export default function NewLocation(){
         e.preventDefault();
 
         lonlat = `point(${latitude} ${longitude})`;
-
-        console.log(longitude);
-        console.log(latitude);
-        
-        console.log(lonlat);
-
 
         try{
             await api.patch(`/api/people/${id}`, {lonlat});

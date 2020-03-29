@@ -9,37 +9,31 @@ import './styles.css';
 import logoImg from '../../assets/logo.svg';
 
 export default function Reports(){
-    const [survivors, setSurvivors] = useState([]);
-    let otherSurv = '';
 
     const history = useHistory();
 
     const survName = localStorage.getItem('survName');
-    const id = localStorage.getItem('survId');
 
-    let waterAvg = 0;
-    let foodAvg = 0;
-    let medicationAvg = 0;
-    let ammoAvg = 0;
+    const [waterAvg , setWaterAvg] = useState(0);
+    const [foodAvg , setFoodAvg]= useState(0);
+    const [medicationAvg , setMedicationAvg] = useState(0);
+    const [ammoAvg, setAmmoAvg] = useState(0);
 
-    let infectedPercentage;
-    let nonInfectedPercentage;
-    let pointLost;
+    const [infectedPercentage , setInfectedPercentage] = useState(0);
+    const [nonInfectedPercentage, setNonInfectedPercentage] = useState(0);
+    const [pointLost , setPointLost] = useState(0);
 
     async function handleItemReport(){
     
         const response = await api.get('api/report/people_inventory.json');
         
-        if(response.data.report.average_items_quantity_per_person == 0){
-            waterAvg = 0;
-            foodAvg = 0;
-            medicationAvg = 0;
-            ammoAvg = 0;
+        if(response.data.report.average_items_quantity_per_person === 0){
+            return;
         }else{
-            waterAvg = response.data.report.average_quantity_of_each_item_per_person.water;
-            foodAvg = response.data.report.average_quantity_of_each_item_per_person.food;
-            medicationAvg = response.data.report.average_quantity_of_each_item_per_person.medication;
-            ammoAvg = response.data.report.average_quantity_of_each_item_per_person.ammo;
+            setWaterAvg(response.data.report.average_quantity_of_each_item_per_person.water);
+            setFoodAvg(response.data.report.average_quantity_of_each_item_per_person.food);
+            setMedicationAvg(response.data.report.average_quantity_of_each_item_per_person.medication);
+            setAmmoAvg(response.data.report.average_quantity_of_each_item_per_person.ammo);
         }
     
     }
@@ -47,21 +41,19 @@ export default function Reports(){
     async function handleInfectedPercentage(){
         const response = await api.get('/api/report/infected.json1;')
         
-        infectedPercentage = response.data.report.average_infected;
-        infectedPercentage *= 100;
+        setInfectedPercentage(response.data.report.average_infected * 100);
     }
 
     async function handleNonInfectedPercentage(){
         const response = await api.get('/api/report/non_infected.json');
         console.log(response.data.report.average_healthy);
-        nonInfectedPercentage = response.data.report.average_healthy;
-        nonInfectedPercentage *= 100;
+        setNonInfectedPercentage(response.data.report.average_healthy * 100);
     }
 
     async function handlePointlost(){
         const response = await api.get('/api/report/infected_points.json');
         
-        pointLost = response.data.report.total_points_lost;
+        setPointLost(response.data.report.total_points_lost);
         
     }
 
@@ -85,9 +77,9 @@ export default function Reports(){
             <header>
                 <img src={logoImg} alt="ZSSN"/>
                 <span>Welcome {survName}</span>
-                <Link className="back-link" to="/">
+                <Link className="back-link" to="/profile">
                         <FiArrowLeft size={16} color="#e02041" />
-                        Back to Profiles   
+                        Back to Profile   
                     </Link>
                 <button onClick={handleLogout} type="button">
                     <FiPower size={18} color="#E02041" />
@@ -99,10 +91,10 @@ export default function Reports(){
                 
                     <li>
                         <strong>Percentage of infected survivors:</strong>
-                        <p>{infectedPercentage}</p>
+                        <p>{infectedPercentage} %</p>
                 
                         <strong>Percentage of non-infected survivors:</strong>
-                        <p>{nonInfectedPercentage}</p>
+                        <p>{nonInfectedPercentage} %</p>
                 
                         <strong>Average amount of each kind of resource by survivor:</strong>
                         <p>water: {waterAvg}</p>

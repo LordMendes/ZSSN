@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Link , useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -75,47 +75,46 @@ export default function Trade(){
             url: location
         })
 
+        alert(response.data.infected);
         return response.data.infected;
 
     
     }
 
     async function handleTrade(e){
-        if(testInfection(survId)){
-            alert("You're infected, no one wants to trade with you! =/");
-            return;
-        }
 
         e.preventDefault();
         
         items = createItemFormat(water,food,medication,ammunition);
         itemsPick = createItemFormat(waterPick,foodPick,medicationPick,ammunitionPick);
-        
+
         const data = new FormData();
 
-            data.append('consumer[name]', tradeName);
-            data.append('consumer[pick]', itemsPick);
-            data.append('consumer[payment]', items);
+        data.append('consumer[name]', tradeName);
+        data.append('consumer[pick]', itemsPick);
+        data.append('consumer[payment]', items);
         
         try {
 
             const response = await api.post(`/api/people/${survId}/properties/trade_item`, data);
 
-            alert(`Sucesseful Trade!`);
+            alert(`Sucessful Trade!`);
             
             history.push('/profile');
             console.log(response);
+
         } catch (err) {
             console.log(err);
             alert('Oh no, something is wrong...');
         }
+        
     }
 
     return (
         <div className="register-container">
             <div className="content">
                 <section>
-                    <img src={logoImg} alt="Be The Hero"/>
+                    <img src={logoImg} alt="ZSSN"/>
                     
                     <h1>Trade</h1>
                     <p> If you're not infected you can trade with the group!</p>

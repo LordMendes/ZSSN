@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Link , useHistory} from 'react-router-dom';
 import {FiLogIn} from 'react-icons/fi';
 
-import axios from 'axios';
+import api from '../../Services/api';
 
 import './styles.css';
 
@@ -19,25 +19,11 @@ export default function Logon(){
 
         try{
 
-            await axios({
-                method: 'GET',
-                url: `http://zssn-backend-example.herokuapp.com/api/people/${id}`,
-                headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    },
-                params:{
-                    'id':id
-                }                
-            }).then(response => {
-                localStorage.setItem('survName', response.data.name);
-                localStorage.setItem('survId', id);
-                console.log(response);
-            }).catch(error => {
-                console.log(error.response)
-            });
-            
+           const response = await api.get(`/api/people/${id}`);
+           localStorage.setItem('survName', response.data.name);
+           localStorage.setItem('survId', id);
 
+           console.log(response);
             history.push('/profile');
         }catch (err){
             alert('Falha no Login, tente novamente.');
