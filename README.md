@@ -6,6 +6,6 @@
 
 To install all the dependecies
 
-'yarn start'
+`yarn start`
 
 The page will open after this command
