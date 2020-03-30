@@ -2,7 +2,7 @@
 
 ** To properly run **
 
-'npm install'
+`npm install`
 
 To install all the dependecies
 
